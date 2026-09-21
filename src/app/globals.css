@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
+/* Theme: morning (light) / night (dark) */
+[data-theme="morning"] {
+  --background: #f0f4f8;
+  --foreground: #1a202c;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(0, 0, 0, 0.08);
+  --card-border-hover: rgba(0, 0, 0, 0.15);
+  --header-bg: rgba(255, 255, 255, 0.88);
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --btn-primary-bg: linear-gradient(135deg, #38a169 0%, #319795 100%);
+  --btn-primary-text: #ffffff;
+  --btn-primary-shadow: rgba(56, 161, 105, 0.35);
+  --btn-ghost-bg: rgba(0, 0, 0, 0.05);
+  --btn-ghost-text: #4a5568;
+  --canvas-bg: #e2e8f0;
+  --road-surface: #d1d5db;
+  --road-shoulder: #92715a;
+  --road-marking: rgba(0, 0, 0, 0.35);
+  --road-edge: #b45309;
+  --sky-top: #7ec8e3;
+  --sky-bottom: #c9e8f5;
+  --sun-glow: #fbbf24;
+}
+
+[data-theme="night"] {
+  --background: #020617;
+  --foreground: #f1f5f9;
+  --card-bg: rgba(15, 23, 42, 0.88);
+  --card-border: rgba(51, 65, 85, 0.8);
+  --card-border-hover: rgba(99, 102, 241, 0.5);
+  --header-bg: rgba(2, 6, 23, 0.92);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --btn-primary-bg: linear-gradient(135deg, #38bdf8 0%, #06b6d4 100%);
+  --btn-primary-text: #020617;
+  --btn-primary-shadow: rgba(6, 182, 212, 0.35);
+  --btn-ghost-bg: rgba(15, 23, 42, 0.8);
+  --btn-ghost-text: #94a3b8;
+  --canvas-bg: #0f172a;
+  --road-surface: #1e293b;
+  --road-shoulder: #2c1e14;
+  --road-marking: rgba(255, 255, 255, 0.35);
+  --road-edge: #d97706;
+  --sky-top: #0f172a;
+  --sky-bottom: #1e293b;
+  --sun-glow: transparent;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Default to night (existing look) */
+  --background: var(--background);
+  --foreground: var(--foreground);
+  /* Navora brand tokens */
+  --navora-cyan: #06b6d4;
+  --navora-emerald: #10b981;
+  --navora-amber: #f59e0b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-navora-cyan: var(--navora-cyan);
+  --color-navora-emerald: var(--navora-emerald);
+  --color-navora-amber: var(--navora-amber);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Custom scrollbar styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155; /* slate-700 */
+  border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569; /* slate-600 */
+}
+
+/* Canvas crosshair cursor */
+canvas.cursor-crosshair {
+  cursor: crosshair;
+}
+
+/* Smooth animations */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Prevent text selection on UI buttons */
+button, .no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid #22d3ee; /* cyan-400 */
+  outline-offset: 2px;
+}
+
+/* Ensure HTML/body full height */
+html, body, #__next {
+  height: 100%;
+}
+
+/* Smooth pulse for AEB indicator */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, #34d399 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Canvas container smooth scaling */
+canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Selection colors */
+::selection {
+  background-color: #34d399; /* emerald-400 */
+  color: #020617;
 }
+
+/* Utility for roundRect polyfill (supported in modern browsers) */
+/* No additional CSS needed - using CanvasRenderingContext2D.roundRect() */
